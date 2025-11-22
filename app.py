@@ -13,21 +13,19 @@ app.secret_key = 'your_super_secret_key_12345'
 # --- Model and Question Loading ---
 
 # Load the NEW model pipeline
-# Safe absolute path for Render + Local
+# Correct absolute path for Render & local machine
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
 
+print("DEBUG: Trying to load model from:", MODEL_PATH)
+
 try:
     model = joblib.load(MODEL_PATH)
-    print(f"Model loaded from: {MODEL_PATH}")
-except FileNotFoundError:
-    print("="*50)
-    print("FATAL ERROR: 'model.joblib' file not found at:", MODEL_PATH)
-    print("="*50)
-    model = None
+    print("DEBUG: Model loaded successfully!")
 except Exception as e:
-    print(f"Error loading model: {e}")
     model = None
+    print("DEBUG: Model failed to load:", e)
+
 
 # Load all questions from the JSON file
 try:

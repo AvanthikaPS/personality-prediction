@@ -3,6 +3,7 @@ import joblib
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 import numpy as np 
 import sys
+import os
 # We no longer need pandas
 # import pandas as pd 
 
@@ -12,16 +13,18 @@ app.secret_key = 'your_super_secret_key_12345'
 # --- Model and Question Loading ---
 
 # Load the NEW model pipeline
+# Safe absolute path for Render + Local
+BASE_DIR = os.path.dirname(os.path.abspath(_file_))
+MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
+
 try:
-    # model = joblib.load('model_pipeline.joblib') # <-- DELETE THIS LINE
-    model = joblib.load('model.joblib') # <-- ADD THIS LINE
-    print("Raw model ('model.joblib') loaded successfully.")
+    model = joblib.load(MODEL_PATH)
+    print(f"Model loaded from: {MODEL_PATH}")
 except FileNotFoundError:
     print("="*50)
-    print("FATAL ERROR: 'model.joblib' file not found.")
-    print("Please run the new cell in Colab to save the file.")
+    print("FATAL ERROR: 'model.joblib' file not found at:", MODEL_PATH)
     print("="*50)
-    sys.exit() 
+    model = None
 except Exception as e:
     print(f"Error loading model: {e}")
     model = None

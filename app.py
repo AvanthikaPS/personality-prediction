@@ -28,13 +28,16 @@ except Exception as e:
 
 
 # Load all questions from the JSON file
+QUESTIONS_PATH = os.path.join(BASE_DIR, "questions.json")
+
 try:
-    with open('questions.json', 'r') as f:
+    with open(QUESTIONS_PATH, 'r') as f:
         all_questions = json.load(f)
     print(f"Loaded {len(all_questions)} questions successfully.")
 except Exception as e:
-    print(f"FATAL ERROR loading 'questions.json': {e}")
+    print(f"FATAL ERROR loading questions.json: {e}")
     all_questions = []
+
 
 # --- Constants ---
 QUESTIONS_PER_PAGE = 5
@@ -316,5 +319,6 @@ def personal_growth():
 
     return render_template('growth_tips.html', growth_data=growth_data)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)

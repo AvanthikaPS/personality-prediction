@@ -319,7 +319,13 @@ def personal_growth():
 
     return render_template('growth_tips.html', growth_data=growth_data)
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=7860)
+=======
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
+>>>>>>> 530c88a (Fix port for Railway deployment)
 
     # app.run(debug=True)  # Uncomment for local debugging

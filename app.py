@@ -3,6 +3,7 @@ import joblib
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 import numpy as np 
 import requests
+import threading
 from io import BytesIO
 import sys
 import os
@@ -28,7 +29,7 @@ try:
 except Exception as e:
     model = None
     print("DEBUG: Model failed to load:", e)
-
+threading.Thread(target=load_model_async, daemon=True).start()
 
 # Load all questions from the JSON file
 QUESTIONS_PATH = os.path.join(BASE_DIR, "questions.json")

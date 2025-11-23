@@ -320,7 +320,6 @@ def personal_growth():
     return render_template('growth_tips.html', growth_data=growth_data)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=7860)
+
     # app.run(debug=True)  # Uncomment for local debugging
-    

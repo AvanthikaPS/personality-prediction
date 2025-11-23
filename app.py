@@ -2,6 +2,8 @@ import json
 import joblib
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 import numpy as np 
+import requests
+from io import BytesIO
 import sys
 import os
 # We no longer need pandas
@@ -14,14 +16,15 @@ app.secret_key = 'your_super_secret_key_12345'
 
 # Load the NEW model pipeline
 # Correct absolute path for Render & local machine
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
+HF_MODEL_URL = "https://huggingface.co/AvanthikaPS/personality-predictor-model/resolve/main/model.joblib"
 
-print("DEBUG: Trying to load model from:", MODEL_PATH)
+print("DEBUG: Downloading model from HuggingFace...")
 
 try:
-    model = joblib.load(MODEL_PATH)
-    print("DEBUG: Model loaded successfully!")
+    response = requests.get(HF_MODEL_URL)
+    response.raise_for_status()   # if download fails, throw error
+    model = joblib.load(BytesIO(response.content))
+    print("DEBUG: Model loaded successfully from HuggingFace!")
 except Exception as e:
     model = None
     print("DEBUG: Model failed to load:", e)
